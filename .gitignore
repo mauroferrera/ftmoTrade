@@ -1,0 +1,58 @@
+# Secretos y config local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Documentación interna de desarrollo: no forma parte del proyecto publicado
+.agent/
+AGENTS.md
+docs/CHANGELOG_*.md
+
+# Bases de datos: se regeneran desde database/schema.sql, no se versionan
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite3
+*.backup-*
+backups/
+
+# Datos y logs
+data/
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# IDE / SO
+.vscode/
+.idea/
+*.swp
+*~
+Thumbs.db
+desktop.ini
+.DS_Store

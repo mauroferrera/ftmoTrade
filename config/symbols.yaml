@@ -1,0 +1,35 @@
+# Especificaciones de los símbolos que analiza el copiloto.
+#
+# Son un FALLBACK y un catálogo legible, no la fuente de verdad: la spec real
+# (digits, point, tick_value, lot_step, volumen mínimo/máximo) la lee el
+# adaptador de MT5 con `symbol_info`/`symbol_info_trade` y es la que manda. Este
+# fichero solo sirve para:
+#
+#   1. etiquetar la UI cuando MT5 no está conectado,
+#   2. dimensionar en los tests, que no abren terminal,
+#   3. documentar qué unidad usa cada símbolo (evita el clásico error de
+#      aplicarle la distancia de SL de EURUSD al oro).
+#
+# `sl_distance` NO se duplica aquí: vive en `strategy.yaml:execution`, que es
+# donde se configura el comportamiento.
+
+symbols:
+  EURUSD:
+    label: "Euro / Dólar"
+    digits: 5
+    pip: 0.0001
+    unit_label: "pips"
+    market_type: forex
+  XAUUSD:
+    label: "Oro / Dólar"
+    digits: 2
+    # Mismos números que `SymbolSpec.pip` para digits=2: la unidad es el PUNTO
+    # (point * 1), no el pip de forex (que sería point * 10 = 0.10 y multiplicaría
+    # por diez cualquier distancia de SL del oro). La fuente de verdad es
+    # `symbol_info`, esto solo la refleja para la UI sin terminal.
+    pip: 0.01
+    # El oro NO cotiza como un par de divisas: un "pip" de oro no existe en la
+    # práctica y reportar la distancia en pips sería una etiqueta falsa. `unidad`
+    # = punto de precio.
+    unit_label: "puntos"
+    market_type: metal

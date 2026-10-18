@@ -1,0 +1,23 @@
+# Dependencias del dashboard FTMO.
+#
+# Se instala SOLO lo que el proyecto usa. Nada de databento/ccxt/binance/yfinance:
+# el alcance es EURUSD + XAUUSD vía MetaTrader 5. Ver docs/ALCANCE.md.
+
+fastapi==0.141.1
+uvicorn==0.52.4
+python-dotenv==1.2.3
+PyYAML==6.0.3
+pydantic==2.13.5
+
+# Agente IA (copiloto). Gemini vía litellm.
+litellm==1.98.0
+
+# Cliente MT5 (Windows). La importación es perezosa: el núcleo no lo toca.
+MetaTrader5==5.0.6147
+numpy==2.5.2
+requests==2.34.2
+websockets==17.1
+
+# Tests
+pytest>=8.0
+httpx>=0.27

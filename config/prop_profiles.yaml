@@ -1,0 +1,48 @@
+# Perfiles de prop firm (FTMO) por CUENTA: login de MT5 -> perfil de topes.
+#
+# A diferencia de `strategy.yaml` (que describe UNA estrategia), este fichero
+# describe los topes de UNA CUENTA: producto (2-Step / 1-Step), capital inicial y
+# cortes internos. El login de MT5 es la llave (`accounts:`), así que varias
+# cuentas conviven aquí sin tocar el resto de la config.
+#
+# Reglas de validación (core/prop_profiles.py):
+#   - product: 2step | 1step           (obligatorio)
+#   - initial_capital: > 0             (obligatorio)
+#   - phase: challenge | verification  (verification solo en 2step)
+#   - internal_daily_pct / internal_total_pct: DEBEN ser más estrechos que el
+#     tope de FTMO del producto o el parser los rechaza.
+#   - risk_pct_per_trade: opcional (default 0.5 = 5% del buffer).
+#   - accounts: cada nombre debe existir en profiles.
+#
+# Números verificados el 2026-10-14 en ftmo.com/en/trading-objectives. Las reglas
+# de prop firms cambian a menudo: RE-VERIFICA en el dashboard de FTMO antes de
+# pagar un challenge.
+
+profiles:
+  # Primera cuenta: FTMO 2-Step $25.000, fase Challenge.
+  # Cortes internos 4% diario (=$1.000) y 7% total (=$1.750), deliberadamente
+  # más estrechos que los de FTMO (5% = $1.250 / 10% = $2.500) para dejar
+  # margen a spread, swaps, comisiones y el 0.7% de conversión de divisa.
+  ftmo_2step_25k:
+    product: 2step
+    initial_capital: 25000
+    phase: challenge
+    internal_daily_pct: 4.0
+    internal_total_pct: 7.0
+    risk_pct_per_trade: 0.5
+
+  # 1-Step $25.000. La Best Day Rule (mejor día <= 50% del beneficio de los días
+  # positivos) está implementada en `core/prop_rules.py`: avisa, no bloquea.
+  ftmo_1step_25k:
+    product: 1step
+    initial_capital: 25000
+    phase: challenge
+    internal_daily_pct: 2.5
+    internal_total_pct: 7.0
+    risk_pct_per_trade: 0.5
+
+accounts: {}
+# login_mt5: nombre_de_perfil — vacío a propósito: el mapeo de TU cuenta se hace
+# en el `.env` (no versionado) con MT5_LOGIN + FTMO_PROFILE, para no exponer
+# números de cuenta en el repo. Si añades una cuenta fija aquí, el nombre debe
+# existir en `profiles:`.
